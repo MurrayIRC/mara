@@ -36,6 +36,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Destroy",
+                    "type": "Button",
+                    "id": "04aaedfa-1f79-4eae-a507-84e0d192f78b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -80,6 +88,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Load",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fcbbe49a-7d08-4498-949e-23ccbfa141c8",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Destroy",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

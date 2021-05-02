@@ -2,6 +2,7 @@ using System.IO;
 using UnityEngine;
 
 public class GameDataWriter {
+
     BinaryWriter writer;
 
     public GameDataWriter(BinaryWriter writer) {
@@ -14,6 +15,13 @@ public class GameDataWriter {
 
     public void Write(int value) {
         writer.Write(value);
+    }
+
+    public void Write(Color value) {
+        writer.Write(value.r);
+        writer.Write(value.g);
+        writer.Write(value.b);
+        writer.Write(value.a);
     }
 
     public void Write(Quaternion value) {
