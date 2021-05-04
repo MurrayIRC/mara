@@ -17,5 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/CatlikeCodingTutorials/ObjectManagement/Scenes/CC_OM_LEVEL3.unity
     guid: e06cff8cf42e95e4b99dd96f73b31964
+  - enabled: 1
+    path: Assets/CatlikeCodingTutorials/ObjectManagement/Scenes/CC_OM_LEVEL4.unity
+    guid: b72933708138c314d8ecf9aeee4cc9b7
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 2d7757ca9df26404d8f8df034d486008, type: 2}

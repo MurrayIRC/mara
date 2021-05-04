@@ -17,8 +17,8 @@ public class PersistentStorage : MonoBehaviour {
     }
 
     public void Load(PersistentObject o) {
-        using (var reader = new BinaryReader(File.Open(savePath, FileMode.Open))) {
-            o.Load(new GameDataReader(reader, -reader.ReadInt32()));
-        }
+        byte[] data = File.ReadAllBytes(savePath);
+        BinaryReader reader = new BinaryReader(new MemoryStream(data));
+        o.Load(new GameDataReader(reader, -reader.ReadInt32()));
     }
 }

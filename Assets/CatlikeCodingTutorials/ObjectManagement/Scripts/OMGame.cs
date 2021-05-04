@@ -4,20 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class OMGame : PersistentObject {
-    public static OMGame Instance { get; private set; }
-
     public float CreationSpeed { get; set; }
     public float DestructionSpeed { get; set; }
-    public SpawnZone SpawnZoneOfCurrentLevel { get; set; }
 
-    [SerializeField] private ShapeFactory shapeFactory;
+    [SerializeField] private ShapeFactory[] shapeFactories;
     [SerializeField] private PersistentStorage storage;
+    [SerializeField] private Slider creationSpeedSlider;
+    [SerializeField] private Slider destructionSpeedSlider;
     [SerializeField] private int levelCount;
     [SerializeField] private bool reseedOnLoad;
 
-    private const int SAVE_VERSION = 3;
+    private const int SAVE_VERSION = 6;
     private const string SCENE_LEVEL_PREFIX = "CC_OM_LEVEL";
     private int loadedLevelBuildIndex;
 
@@ -28,9 +28,16 @@ public class OMGame : PersistentObject {
     private float creationProgress, destructionProgress;
 
     // UNITY OVERRIDES --------------------------------------------------
+    private void OnEnable() {
+        if (shapeFactories[0].FactoryID != 0) {
+            for (int i = 0; i < shapeFactories.Length; i++) {
+                shapeFactories[i].FactoryID = i;
+            }
+        }
+    }
+
     private void Start() {
         mainRandomState = Random.state;
-        Instance = this;
 
         shapes = new List<Shape>();
 
@@ -49,11 +56,11 @@ public class OMGame : PersistentObject {
         StartCoroutine(LoadLevel(1));
     }
 
-    private void OnEnable() {
-        Instance = this;
-    }
+    private void FixedUpdate() {
+        for (int i = 0; i < shapes.Count; i++) {
+            shapes[i].GameUpdate();
+        }
 
-    private void Update() {
         creationProgress += Time.deltaTime * CreationSpeed;
         while (creationProgress >= 1f) {
             creationProgress -= 1f;
@@ -72,8 +79,14 @@ public class OMGame : PersistentObject {
     public override void Save(GameDataWriter writer) {
         writer.Write(shapes.Count);
         writer.Write(Random.state);
+        writer.Write(CreationSpeed);
+        writer.Write(creationProgress);
+        writer.Write(DestructionSpeed);
+        writer.Write(destructionProgress);
         writer.Write(loadedLevelBuildIndex);
+        GameLevel.Current.Save(writer);
         for (int i = 0; i < shapes.Count; i++) {
+            writer.Write(shapes[i].OriginFactory.FactoryID);
             writer.Write(shapes[i].ShapeID);
             writer.Write(shapes[i].MaterialID);
             shapes[i].Save(writer);
@@ -86,6 +99,11 @@ public class OMGame : PersistentObject {
             Debug.LogError("Unsupported future save version " + version);
             return;
         }
+        StartCoroutine(LoadGameRoutine(reader));
+    }
+
+    IEnumerator LoadGameRoutine(GameDataReader reader) {
+        int version = reader.Version;
         int count = version <= 0 ? -version : reader.ReadInt();
 
         if (version >= 3) {
@@ -93,13 +111,22 @@ public class OMGame : PersistentObject {
             if (!reseedOnLoad) {
                 Random.state = state;
             }
+            creationSpeedSlider.value = CreationSpeed = reader.ReadFloat();
+            creationProgress = reader.ReadFloat();
+            destructionSpeedSlider.value = DestructionSpeed = reader.ReadFloat();
+            destructionProgress = reader.ReadFloat();
         }
 
-        StartCoroutine(LoadLevel(version < 2 ? 1 : reader.ReadInt()));
+        yield return LoadLevel(version < 2 ? 1 : reader.ReadInt());
+        if (version >= 3) {
+            GameLevel.Current.Load(reader);
+        }
+
         for (int i = 0; i < count; i++) {
+            int factoryId = version >= 5 ? reader.ReadInt() : 0;
             int shapeID = version > 0 ? reader.ReadInt() : 0;
             int materialID = version > 0 ? reader.ReadInt() : 0;
-            Shape instance = shapeFactory.GetShape(shapeID, materialID);
+            Shape instance = shapeFactories[factoryId].GetShape(shapeID, materialID);
             instance.Load(reader);
             shapes.Add(instance);
         }
@@ -107,24 +134,13 @@ public class OMGame : PersistentObject {
     // ------------------------------------------------------------------
 
     private void CreateShape() {
-        Shape instance = shapeFactory.GetRandom();
-        Transform t = instance.transform;
-        t.localPosition = SpawnZoneOfCurrentLevel.SpawnPoint;
-        t.localRotation = Random.rotation;
-        t.localScale = Vector3.one * Random.Range(0.1f, 1f);
-        instance.SetColor(Random.ColorHSV(
-            hueMin: 0f, hueMax: 1f,
-            saturationMin: 0.5f, saturationMax: 1f,
-            valueMin: 0.25f, valueMax: 1f,
-            alphaMin: 1f, alphaMax: 1f
-        ));
-        shapes.Add(instance);
+        shapes.Add(GameLevel.Current.SpawnShape());
     }
 
     private void DestroyShape() {
         if (shapes.Count > 0) {
             int index = Random.Range(0, shapes.Count);
-            shapeFactory.Reclaim(shapes[index]);
+            shapes[index].Recycle();
             int lastIndex = shapes.Count - 1;
             shapes[index] = shapes[lastIndex];
             shapes.RemoveAt(lastIndex);
@@ -144,8 +160,11 @@ public class OMGame : PersistentObject {
         mainRandomState = Random.state;
         Random.InitState(seed);
 
+        creationSpeedSlider.value = CreationSpeed = 0f;
+        destructionSpeedSlider.value = DestructionSpeed = 0f;
+
         for (int i = 0; i < shapes.Count; i++) {
-            shapeFactory.Reclaim(shapes[i]);
+            shapes[i].Recycle();
         }
         shapes.Clear();
     }
@@ -173,6 +192,7 @@ public class OMGame : PersistentObject {
 
     public void OnNewGamePressed() {
         BeginNewGame();
+        StartCoroutine(LoadLevel(loadedLevelBuildIndex));
     }
 
     public void OnSavePressed() {
@@ -197,6 +217,11 @@ public class OMGame : PersistentObject {
     public void OnScene3Pressed() {
         BeginNewGame();
         StartCoroutine(LoadLevel(3));
+    }
+
+    public void OnScene4Pressed() {
+        BeginNewGame();
+        StartCoroutine(LoadLevel(4));
     }
     // ------------------------------------------------------------------
 }

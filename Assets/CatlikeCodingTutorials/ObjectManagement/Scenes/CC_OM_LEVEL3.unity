@@ -152,6 +152,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 465e9f94a73fd324fa73c892702df83b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnConfig:
+    factories: []
+    movementDirection: 0
+    speed:
+      min: 0
+      max: 0
+    angularSpeed:
+      min: 0
+      max: 0
+    scale:
+      min: 0
+      max: 0
+    color:
+      hue:
+        min: 0
+        max: 1
+      saturation:
+        min: 0.5
+        max: 1
+      value:
+        min: 0.25
+        max: 1
+    uniformColor: 0
   surfaceOnly: 0
 --- !u!4 &490728564
 Transform:
@@ -196,6 +219,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef31db031a7bc8e43bb7e03deeb5deec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnConfig:
+    factories: []
+    movementDirection: 0
+    speed:
+      min: 0
+      max: 0
+    angularSpeed:
+      min: 0
+      max: 0
+    scale:
+      min: 0
+      max: 0
+    color:
+      hue:
+        min: 0
+        max: 1
+      saturation:
+        min: 0.5
+        max: 1
+      value:
+        min: 0.25
+        max: 1
+    uniformColor: 0
   surfaceOnly: 0
 --- !u!4 &668782722
 Transform:
@@ -241,6 +287,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnZone: {fileID: 1638754526}
+  persistentObjects:
+  - {fileID: 1638754526}
 --- !u!4 &752118504
 Transform:
   m_ObjectHideFlags: 0
@@ -284,6 +332,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef31db031a7bc8e43bb7e03deeb5deec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnConfig:
+    factories: []
+    movementDirection: 0
+    speed:
+      min: 0
+      max: 0
+    angularSpeed:
+      min: 0
+      max: 0
+    scale:
+      min: 0
+      max: 0
+    color:
+      hue:
+        min: 0
+        max: 1
+      saturation:
+        min: 0.5
+        max: 1
+      value:
+        min: 0.25
+        max: 1
+    uniformColor: 0
   surfaceOnly: 1
 --- !u!4 &807115369
 Transform:
@@ -328,6 +399,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 465e9f94a73fd324fa73c892702df83b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnConfig:
+    factories: []
+    movementDirection: 0
+    speed:
+      min: 0
+      max: 0
+    angularSpeed:
+      min: 0
+      max: 0
+    scale:
+      min: 0
+      max: 0
+    color:
+      hue:
+        min: 0
+        max: 1
+      saturation:
+        min: 0.5
+        max: 1
+      value:
+        min: 0.25
+        max: 1
+    uniformColor: 0
   surfaceOnly: 1
 --- !u!4 &1344569701
 Transform:
@@ -465,11 +559,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cdcb9851234892438a63da14879499f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnConfig:
+    factories:
+    - {fileID: 11400000, guid: 0fb8407253772af429e18df52f9f1b17, type: 2}
+    - {fileID: 11400000, guid: a2e97ad4e6536c34aabc9c06744e11cb, type: 2}
+    movementDirection: 2
+    speed:
+      min: 10
+      max: 20
+    angularSpeed:
+      min: 30
+      max: 40
+    scale:
+      min: 1
+      max: 5
+    color:
+      hue:
+        min: 0
+        max: 1
+      saturation:
+        min: 0.5
+        max: 1
+      value:
+        min: 0.25
+        max: 1
+    uniformColor: 0
+  isSequential: 1
   spawnZones:
   - {fileID: 490728563}
   - {fileID: 1344569700}
   - {fileID: 668782721}
   - {fileID: 807115368}
+  overrideConfig: 0
 --- !u!4 &1638754527
 Transform:
   m_ObjectHideFlags: 0
