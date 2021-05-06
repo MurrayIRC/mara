@@ -4,21 +4,6 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 1
-    path: Assets/CatlikeCodingTutorials/ObjectManagement/Scenes/CC_OM_MAIN.unity
-    guid: 5eaa9731e9ea1004f9f7d715fdafdec4
-  - enabled: 1
-    path: Assets/CatlikeCodingTutorials/ObjectManagement/Scenes/CC_OM_LEVEL1.unity
-    guid: dfa50e1ed731bcb469471d8d66c5b0ad
-  - enabled: 1
-    path: Assets/CatlikeCodingTutorials/ObjectManagement/Scenes/CC_OM_LEVEL2.unity
-    guid: bd54ed4d7b087a6479bb5ceaf34fe9e9
-  - enabled: 1
-    path: Assets/CatlikeCodingTutorials/ObjectManagement/Scenes/CC_OM_LEVEL3.unity
-    guid: e06cff8cf42e95e4b99dd96f73b31964
-  - enabled: 1
-    path: Assets/CatlikeCodingTutorials/ObjectManagement/Scenes/CC_OM_LEVEL4.unity
-    guid: b72933708138c314d8ecf9aeee4cc9b7
+  m_Scenes: []
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 2d7757ca9df26404d8f8df034d486008, type: 2}
